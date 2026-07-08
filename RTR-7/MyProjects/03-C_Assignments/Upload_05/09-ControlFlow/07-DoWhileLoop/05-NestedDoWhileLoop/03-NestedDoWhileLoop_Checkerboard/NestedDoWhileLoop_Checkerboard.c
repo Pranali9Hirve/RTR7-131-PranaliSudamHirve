@@ -13,7 +13,7 @@ int main(void)
         psh_j = 0;
         do
         {
-            psh_c = ((psh_i & 0X2) == 0) ^ ((psh_j & 0X2) == 0);
+            psh_c = ((psh_i & 0X8) == 0) ^ ((psh_j & 0X8) == 0);
             if (psh_c == 0)
             {
                 printf(" ");
@@ -24,9 +24,9 @@ int main(void)
                 printf("# ");
             }
             psh_j++;
-        }while ( psh_j < 12 );
+        }while ( psh_j < 64 );
         psh_i++;
         printf("\n\n");
-    }while ( psh_i < 12);
+    }while ( psh_i < 64);
     return(0);
 }

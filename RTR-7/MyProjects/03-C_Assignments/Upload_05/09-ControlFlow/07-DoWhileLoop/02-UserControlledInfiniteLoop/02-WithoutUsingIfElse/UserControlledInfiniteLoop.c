@@ -16,7 +16,7 @@ int main(void)
             printf("\n");
             printf("In Loop...\n");
             psh_ch = getch(); // Control flow waits for character input...
-        }while (psh_ch == 'Q' || psh_ch == 'q'); 
+        }while (psh_ch != 'Q' && psh_ch != 'q'); 
         printf("\n\n");
         printf("EXITTING USER CONTROLLED INFINITE LOOP...");
         printf("\n\n");
