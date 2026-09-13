@@ -1,0 +1,6 @@
+PSH: Program started successfully !!!
+OpenGL Vendor: Intel
+OpenGL Renderer: Intel(R) Iris(R) Xe Graphics
+OpenGL Version: 4.6.0 - Build 32.0.101.6733
+PSH: WinMain(): initialize():  function Succedded
+PSH: Program terminated successfully!!!
