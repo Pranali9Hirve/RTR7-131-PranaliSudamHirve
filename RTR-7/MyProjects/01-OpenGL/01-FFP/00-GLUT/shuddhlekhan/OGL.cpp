@@ -11,21 +11,21 @@ int main(int argc, char* argv[])
     void mouse(int, int, int, int);
 
     // Code
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
+    glutInit(&argc, argv); // WinMain is hidden in glutInit, wndClassEx ch initialization, registerClassEx he glutInit madhe ahe
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA); // GLUT_DOUBLE -> PFD_DOUBLEBUFFER 
     glutInitWindowSize(800, 600);
-    glutInitWindowPosition(100, 100);
-    glutCreateWindow("My First RTR7 Program: Pranali Sudam Hirve");
+    glutInitWindowPosition(100, 100); // x and y
+    glutCreateWindow("My First RTR7 Program: Pranali Sudam Hirve"); // TEXT
 
     initialize();
 
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
-    glutKeyboardFunc(keyboard);
+    glutKeyboardFunc(keyboard); // WM_KEYDOWN
     glutMouseFunc(mouse);
     glutCloseFunc(unInitialize);
 
-    glutMainLoop();
+    glutMainLoop(); // Game loop
 
     // Flow should not come here
     return(0);
@@ -56,14 +56,14 @@ void display(void)
     glLoadIdentity();
 
     glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, 1.0f, 0.0f);
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(-1.0f, -1.0f, 0.0f);
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(1.0f, -1.0f, -1.0f);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(0.0f, 1.0f, 0.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3f(-1.0f, -1.0f, 0.0f);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex3f(1.0f, -1.0f, -1.0f);
     glEnd();
-    glutSwapBuffers();
+    glutSwapBuffers(); // internally calling SwapBuffers(ghdc);
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -71,7 +71,7 @@ void keyboard(unsigned char key, int x, int y)
     // Code
     switch (key)
     {
-        case 27:
+        case 27: // VK_ESCAPE
             glutLeaveMainLoop();
             break;
         case 'F':
