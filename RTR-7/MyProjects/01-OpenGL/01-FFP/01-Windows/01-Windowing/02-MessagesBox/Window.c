@@ -12,31 +12,31 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 // Entry Point Function
 // HINSTANCE -> HANDLE
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow)
+int WINAPI WinMain(HINSTANCE psh_hInstance, HINSTANCE psh_hPrevInstance, LPSTR psh_lpszCmdLine, int psh_iCmdShow)
 {
     // Variable Declarations
-    WNDCLASSEX wndclass;
-    HWND hwnd = NULL;
-    MSG msg;
-    TCHAR szAppName[] = TEXT("RTR7_PSH");
+    WNDCLASSEX psh_wndclass;
+    HWND psh_hwnd = NULL;
+    MSG psh_msg;
+    TCHAR psh_szAppName[] = TEXT("RTR7_PSH");
 
     // Code
     // 1: WNDCLASSEX Structure Initialization
-    wndclass.cbSize = sizeof(WNDCLASSEX); // Added newly cb-count of bytes (byte size)
-    wndclass.style = CS_HREDRAW|CS_VREDRAW; // CS -> class style 
-    wndclass.cbClsExtra = 0;
-    wndclass.cbWndExtra = 0;
-    wndclass.lpfnWndProc = WndProc;
-    wndclass.hInstance = hInstance;
-    wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    wndclass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(MYICON));
-    wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wndclass.lpszClassName = szAppName;
-    wndclass.lpszMenuName = NULL;
-    wndclass.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(MYICON)); // Added newly
+    psh_wndclass.cbSize = sizeof(WNDCLASSEX); // Added newly cb-count of bytes (byte size)
+    psh_wndclass.style = CS_HREDRAW|CS_VREDRAW; // CS -> class style 
+    psh_wndclass.cbClsExtra = 0;
+    psh_wndclass.cbWndExtra = 0;
+    psh_wndclass.lpfnWndProc = WndProc;
+    psh_wndclass.hInstance = psh_hInstance;
+    psh_wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    psh_wndclass.hIcon = LoadIcon(psh_hInstance, MAKEINTRESOURCE(MYICON));
+    psh_wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
+    psh_wndclass.lpszClassName = psh_szAppName;
+    psh_wndclass.lpszMenuName = NULL;
+    psh_wndclass.hIconSm = LoadIcon(psh_hInstance, MAKEINTRESOURCE(MYICON)); // Added newly
 
-    // 2: Register Above WNDCLASS
-    RegisterClassEx(&wndclass); // return value = atom (such a string which is immutable )
+    // 2: Register Above psh_WNDCLASS
+    RegisterClassEx(&psh_wndclass); // return value = atom (such a string which is immutable )
 
     // Centering
     // Farashi chi width
@@ -45,8 +45,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     int pshScreenHeight = GetSystemMetrics(SM_CYSCREEN); // SM_CYSCREEN:=> MACRO Screen chi height de
 
     // 3: Create the Window
-    hwnd = CreateWindow(
-        szAppName,
+    psh_hwnd = CreateWindow(
+        psh_szAppName,
         TEXT("PRANALI HIRVE-RTR7-131-PranaliSudamHirve/RTR-7/MyProjects/01-OpenGL/01-FFP/01-Windows/01-Windowing/02-MessageBox"),
         WS_OVERLAPPEDWINDOW,
         pshScreenWidth/2 - PSH_WIN_WIDTH/2, // x-coordinate, screen 
@@ -55,64 +55,64 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
         PSH_WIN_HEIGHT, // height, rumalachi height
         NULL,
         NULL,
-        hInstance,
+        psh_hInstance,
         NULL);
 
     // Show Window
-    ShowWindow(hwnd, iCmdShow);
+    ShowWindow(psh_hwnd, psh_iCmdShow);
 
     // Update the window to paint its backgound
-    UpdateWindow(hwnd);
+    UpdateWindow(psh_hwnd);
 
     // Message Loop
-    while (GetMessage(&msg, NULL, 0, 0))
+    while (GetMessage(&psh_msg, NULL, 0, 0))
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        TranslateMessage(&psh_msg);
+        DispatchMessage(&psh_msg);
     }
-    TCHAR str[255];
-    wsprintf(str, TEXT("%d"), (int)msg.wParam);
-   // MessageBox(hwnd, str, TEXT("wParam"), MB_OK);
-    MessageBox(NULL, str, TEXT("wParam"), MB_OK);
-    return((int)msg.wParam);
+    TCHAR psh_str[255];
+    wsprintf(psh_str, TEXT("%d"), (int)psh_msg.wParam);
+   // MessageBox(hwnd, psh_str, TEXT("wParam"), MB_OK);
+    MessageBox(NULL, psh_str, TEXT("wParam"), MB_OK);
+    return((int)psh_msg.wParam);
 }
 
 // Declarator (Function Implementation)
-LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc(HWND psh_hwnd, UINT psh_iMsg, WPARAM psh_wParam, LPARAM psh_lParam)
 {
     // Code
-    switch(iMsg)
+    switch(psh_iMsg)
     {
         case WM_DESTROY:
-            MessageBox(hwnd, TEXT("WM_DESTROY is received "), TEXT("Message"), MB_OK);
+            MessageBox(psh_hwnd, TEXT("WM_DESTROY is received "), TEXT("Message"), MB_OK);
             PostQuitMessage(131);
             break;
         case WM_CREATE:
-            MessageBox(hwnd, TEXT("WM_CREATE is received"), TEXT("Message"), MB_OK);
+            MessageBox(psh_hwnd, TEXT("WM_CREATE is received"), TEXT("Message"), MB_OK);
             break;
         case WM_SETFOCUS:
             break;
         case WM_KILLFOCUS:
             break;
         case WM_SIZE:
-            MessageBox(hwnd, TEXT("WM_SIZE is received"), TEXT("Message"), MB_OK);
+            MessageBox(psh_hwnd, TEXT("WM_SIZE is received"), TEXT("Message"), MB_OK);
             break;
         case WM_KEYDOWN:
-            switch(wParam)
+            switch(psh_wParam)
             {
                 case VK_ESCAPE:
-                    MessageBox(hwnd, TEXT(" WM_KEYDOWN: VK_ESCAPE is pressed"), TEXT("Message"), MB_OK);
+                    MessageBox(psh_hwnd, TEXT(" WM_KEYDOWN: VK_ESCAPE is pressed"), TEXT("Message"), MB_OK);
                     break;
                 default:
                     break;
             }
             break;
         case WM_CHAR:
-            switch (wParam)
+            switch (psh_wParam)
             {
                 case 'F':
                 case 'f':
-                    MessageBox(hwnd, TEXT("WM_CHAR: F/f key is pressed"), TEXT("Message"), MB_OK);
+                    MessageBox(psh_hwnd, TEXT("WM_CHAR: F/f key is pressed"), TEXT("Message"), MB_OK);
                     break;
                 
                 default:
@@ -120,10 +120,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             }
             break;
         case WM_CLOSE:
-            MessageBox(hwnd, TEXT("WM_CLOSE is received "), TEXT("Message"), MB_OK);
+            MessageBox(psh_hwnd, TEXT("WM_CLOSE is received "), TEXT("Message"), MB_OK);
             break;
         default:
             break; 
     }
-    return(DefWindowProc(hwnd, iMsg, wParam, lParam));
+    return(DefWindowProc(psh_hwnd, psh_iMsg, psh_wParam, psh_lParam));
 }
