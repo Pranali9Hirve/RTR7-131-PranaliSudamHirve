@@ -1,4 +1,0 @@
-// locally created and used hence in double quotes
-#include "Window.h"
-
-MYICON ICON PshIcon.ico
