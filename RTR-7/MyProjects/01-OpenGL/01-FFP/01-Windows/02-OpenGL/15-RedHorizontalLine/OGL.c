@@ -376,12 +376,12 @@ void render() // disply
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -3.0f);
+    glTranslatef(0.0f, 0.0f, -1.0f);
     glLineWidth(5.0f);
     glBegin(GL_LINES);
         glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex3f(-(PSH_WIN_WIDTH/2), 0.0f, 0.0f);
-        glVertex3f((PSH_WIN_WIDTH/2), 0.0f, 0.0f);
+        glVertex3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(-1.0f, 0.0f, 0.0f);
     glEnd();
 
     // Do double buffering
