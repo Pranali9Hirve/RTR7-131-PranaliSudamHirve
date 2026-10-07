@@ -5,7 +5,7 @@
 
 // OpenGL
 #include<gl\GL.h> // SDK mazya include chya path madhe gl chya aat GL.h ahe
-#include<gl\GLU.h>
+#include<gl\GLU.h> // for gluPerspective
 #include "OGL.h"
 
 // Link with OpenGL import library
@@ -363,10 +363,10 @@ void resize(int width, int height)
 
     // Perspective Projection - Js dista ts
     gluPerspective(
-        45.0f, //fovy (degrees as it is angle (field of view))
-        (GLfloat)width/(GLfloat)height,
-        0.1f, // near to eye
-        100.0f
+        45.0f, //fovy (degrees as it is angle (field of view (FOV))) it is standard value
+        (GLfloat)width/(GLfloat)height, // (width ani height cha ratio)
+        0.1f, // near to eye (standard value)
+        100.0f // far
     ); 
 }
 
@@ -376,7 +376,7 @@ void render() // disply
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -3.0f); // Matrix madhe value aaly ani triangle disla
+    glTranslatef(0.0f, 0.0f, -3.0f); // adhi Matrix madhe value aaly ani triangle disla
     glBegin(GL_TRIANGLES);
         glVertex3f(0.0f, 1.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, 0.0f);

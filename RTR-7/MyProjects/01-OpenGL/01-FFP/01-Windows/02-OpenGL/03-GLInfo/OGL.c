@@ -93,7 +93,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     hwnd = CreateWindowEx(
         WS_EX_APPWINDOW,
         szAppName,
-        TEXT("PRANALI HIRVE-RTR7-131-PranaliSudamHirve-RTR-7-MyProjects-01-OpenGL-01-FFP-01-WindowsOS-02-BlueScreen"),
+        TEXT("PRANALI HIRVE: /RTR7-131-PranaliSudamHirve/RTR-7/MyProjects/01-OpenGL/01-FFP/01-Windows/02-OpenGL/03-GLInfo"),
         WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
         pshScreenWidth/2 - PSH_WIN_WIDTH/2, // x-coordinate, screen 
         pshScreenHeight/2 - PSH_WIN_HEIGHT/2, // y-coordinate

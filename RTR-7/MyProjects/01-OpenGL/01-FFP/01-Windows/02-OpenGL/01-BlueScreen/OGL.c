@@ -281,6 +281,7 @@ int initialize(void)
 {
     // Function declarations
     void resize(int, int);
+    void printGLInfo(void);
 
     // Variable declarations
     PIXELFORMATDESCRIPTOR pfd;
@@ -325,11 +326,22 @@ int initialize(void)
         return(-5);
     }
 
+    // print opengl info
+    printGLInfo();
+
     // Choose screen clearing color as blue
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     resize(PSH_WIN_WIDTH, PSH_WIN_HEIGHT);
 
     return(0);
+}
+
+void printGLInfo(void)
+{
+    // Code
+    fprintf(gpFile, "OpenGL Vendor: %s\n", glGetString(GL_VENDOR));
+    fprintf(gpFile, "OpenGL Renderer: %s\n", glGetString(GL_RENDERER)); // Driver chi identity
+    fprintf(gpFile, "OpenGL Version: %s\n", glGetString(GL_VERSION));
 }
 
 void resize(int width, int height)
