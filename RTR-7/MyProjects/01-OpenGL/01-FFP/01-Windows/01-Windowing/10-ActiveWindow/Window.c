@@ -126,43 +126,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
 
     // Game Loop
-    // while(bDone == FALSE)
-    // {
-    //     if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE ))
-    //     {
-    //         if (msg.message == WM_QUIT)
-    //         {
-    //             bDone = TRUE;
-    //         }
-    //         else
-    //         {
-    //             TranslateMessage(&msg);
-    //             DispatchMessage(&msg);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         if (psh_bActiveWindow == TRUE)
-    //         {
-    //             if (psh_bEscapeKeyIsPressed == TRUE)
-    //             {
-    //                 bDone = TRUE;
-    //             }
-
-    //             // Render
-    //             render();
-    //             update();
-    //         }
-    //     }
-    // }
-
-    // Message Loop
-    while (GetMessage(&msg, NULL, 0, 0))
+    while(bDone == FALSE)
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE ))
+        {
+            if (msg.message == WM_QUIT)
+            {
+                bDone = TRUE;
+            }
+            else
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+        else
+        {
+            if (psh_bActiveWindow == TRUE)
+            {
+                if (psh_bEscapeKeyIsPressed == TRUE)
+                {
+                    bDone = TRUE;
+                }
+
+                // Render
+                render();
+                update();
+            }
+        }
     }
-    
+
     // unInitialize
     unInitialize();
     

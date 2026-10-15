@@ -435,7 +435,7 @@ void render() // display
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glTranslatef(0.0f, 0.0f, -4.0f);
+    glTranslatef(0.0f, 0.0f, -2.5f);
 
     switch (pshKeyPressed)
     {

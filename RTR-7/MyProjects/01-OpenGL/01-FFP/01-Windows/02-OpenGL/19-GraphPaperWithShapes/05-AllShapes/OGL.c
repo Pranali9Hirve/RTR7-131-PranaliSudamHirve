@@ -425,85 +425,143 @@ void render() // disply
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(0.0f, 0.0f, -1.5f);
-    switch (pshKeyPressed)
+
+    if (pshKeyPressed == 'g')
     {
-        case 't':
-            if (psh_tPressed)
-            {
-                drawGraph();
-            }
-            glTranslatef(0.0f, 0.0f, -3.0f);
-                glBegin(GL_LINE_LOOP);
-                    glColor3f(1.0f, 1.0f, 0.0f);
-                    glVertex3f(0.0f, 1.0f, 0.0f);
-                    glVertex3f(-1.0f, -1.0f, 0.0f);
-                    glVertex3f(1.0f, -1.0f, 0.0f);
-                glEnd();
-            break;
+        glLoadIdentity();
+        glTranslatef(0.0f, 0.0f, -1.5f);
+        drawGraph();
+    } 
 
-        case 's':
-        if (psh_sPressed)
-            {
-                drawGraph();
-            }
-            glTranslatef(0.0f, 0.0f, -3.0f);
-                glBegin(GL_LINE_LOOP);
-                    glColor3f(1.0f, 1.0f, 0.0f);
-                    glVertex3f(1.0f, 1.0f, 0.0f);
-                    glVertex3f(-1.0f, 1.0f, 0.0f);
-                    glVertex3f(-1.0f, -1.0f, 0.0f);
-                    glVertex3f(1.0f, -1.0f, 0.0f);
-                glEnd();
-            break;
-
-        case 'c':
-            drawGraph();
-            if (psh_cPressed == FALSE)
-            {
-                glTranslatef(0.0f, 0.0f, -3.0f);
-                glBegin(GL_LINE_LOOP);
-                    glColor3f(1.0f, 1.0f, 0.0f);
-
-                    for (int i = 0; i <= 360; i++) {
-                        float theta = 2.0f * 3.14 * i / 180;
-                        float x = 0.0f +  0.5 * (float)cos(theta);
-                        float y = 0.0f + 0.5 * (float)sin(theta);
-                        glVertex3f(x, y, 0.0f);
-                    }
-                
-                glEnd();
-            }
-            else
-            {
-                glTranslatef(0.0f, 0.0f, -3.0f);
-                glPointSize(1.5f);
-                glEnable(GL_POINT_SMOOTH);
-                    glBegin(GL_POINTS);
-                        glColor3f(1.0f, 1.0f, 0.0f);
-                        glVertex2f(0.0f, 0.0f);
-
-                        for (int i = 0; i <= 360; i = i+3) {
-                            float theta = 2.0f * 3.14 * i / 180;
-                            float x = 0.0f +  0.5 * (float)cos(theta);
-                            float y = 0.0f + 0.5 * (float)sin(theta);
-                            glVertex3f(x, y, 0.0f);
-                        }
-                    
-                    glEnd();
-                glDisable(GL_POINT_SMOOTH);
-            }
-            break;
-
-        case 'g':
-            drawGraph();
-            break;
-        
-        case '0':
-            break;
-        
-        default:
-            break;
+    if (psh_tPressed)
+    {
+        // drawGraph();
+        glLoadIdentity();
+        glTranslatef(0.0f, 0.0f, -3.0f);
+        glBegin(GL_LINE_LOOP);
+            glColor3f(1.0f, 1.0f, 0.0f);
+            glVertex3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glVertex3f(1.0f, -1.0f, 0.0f);
+        glEnd();
     }
+
+    if (psh_sPressed)
+    {
+        //drawGraph();
+        glLoadIdentity();
+        glTranslatef(0.0f, 0.0f, -3.0f);
+        glBegin(GL_LINE_LOOP);
+            glColor3f(1.0f, 1.0f, 0.0f);
+            glVertex3f(1.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glVertex3f(1.0f, -1.0f, 0.0f);
+        glEnd();
+    }
+
+    if (psh_cPressed)
+    {
+        glLoadIdentity();
+        glTranslatef(0.0f, 0.0f, -3.0f);
+        glBegin(GL_LINE_LOOP);
+            glColor3f(1.0f, 1.0f, 0.0f);
+
+            for (int i = 0; i <= 360; i++) {
+                float theta = 2.0f * 3.14 * i / 180; // iXpi/180;
+                float x = 0.0f +  1.0 * (float)cos(theta);
+                float y = 0.0f + 1.0 * (float)sin(theta);
+                glVertex3f(x, y, 0.0f);
+            }
+        
+        glEnd();
+    }
+
+    if (pshKeyPressed == '0')
+    {
+        
+    }
+
+    // switch (pshKeyPressed)
+    // {
+    //     case 't':
+    //         if (psh_tPressed)
+    //         {
+    //             // drawGraph();
+    //             // glTranslatef(0.0f, 0.0f, -3.0f);
+    //             glBegin(GL_LINE_LOOP);
+    //                 glColor3f(1.0f, 1.0f, 0.0f);
+    //                 glVertex3f(0.0f, 1.0f, 0.0f);
+    //                 glVertex3f(-1.0f, -1.0f, 0.0f);
+    //                 glVertex3f(1.0f, -1.0f, 0.0f);
+    //             glEnd();
+    //         } 
+    //         break;
+
+    //     case 's':
+    //         if (psh_sPressed)
+    //         {
+    //             //drawGraph();
+    //             // glTranslatef(0.0f, 0.0f, -3.0f);
+    //             glBegin(GL_LINE_LOOP);
+    //                 glColor3f(1.0f, 1.0f, 0.0f);
+    //                 glVertex3f(1.0f, 1.0f, 0.0f);
+    //                 glVertex3f(-1.0f, 1.0f, 0.0f);
+    //                 glVertex3f(-1.0f, -1.0f, 0.0f);
+    //                 glVertex3f(1.0f, -1.0f, 0.0f);
+    //             glEnd();
+    //         }
+            
+    //         break;
+
+    //     case 'c':
+    //         // drawGraph();
+    //         if (psh_cPressed)
+    //         {
+    //             // glTranslatef(0.0f, 0.0f, -3.0f);
+    //             glBegin(GL_LINE_LOOP);
+    //                 glColor3f(1.0f, 1.0f, 0.0f);
+
+    //                 for (int i = 0; i <= 360; i++) {
+    //                     float theta = 2.0f * 3.14 * i / 180;
+    //                     float x = 0.0f +  0.5 * (float)cos(theta);
+    //                     float y = 0.0f + 0.5 * (float)sin(theta);
+    //                     glVertex3f(x, y, 0.0f);
+    //                 }
+                
+    //             glEnd();
+    //         }
+    //         // else
+    //         // {
+    //         //     glTranslatef(0.0f, 0.0f, -3.0f);
+    //         //     glPointSize(1.5f);
+    //         //     glEnable(GL_POINT_SMOOTH);
+    //         //         glBegin(GL_POINTS);
+    //         //             glColor3f(1.0f, 1.0f, 0.0f);
+    //         //             glVertex2f(0.0f, 0.0f);
+
+    //         //             for (int i = 0; i <= 360; i = i+3) {
+    //         //                 float theta = 2.0f * 3.14 * i / 180;
+    //         //                 float x = 0.0f +  0.5 * (float)cos(theta);
+    //         //                 float y = 0.0f + 0.5 * (float)sin(theta);
+    //         //                 glVertex3f(x, y, 0.0f);
+    //         //             }
+                    
+    //         //         glEnd();
+    //         //     glDisable(GL_POINT_SMOOTH);
+    //         // }
+    //         break;
+
+    //     case 'g':
+    //         drawGraph();
+    //         break;
+        
+    //     case '0':
+    //         break;
+        
+    //     default:
+    //         break;
+    // }
     // Do double buffering
     SwapBuffers(ghdc);
 }
