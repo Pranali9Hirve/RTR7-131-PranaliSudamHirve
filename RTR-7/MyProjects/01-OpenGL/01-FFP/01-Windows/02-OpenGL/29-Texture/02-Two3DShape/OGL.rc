@@ -1,0 +1,8 @@
+// locally created and used hence in double quotes
+#include "OGL.h"
+
+MYICON ICON PshIcon.ico
+
+IDBITMAP_STONE BITMAP Stone.bmp
+
+IDBITMAP_KUNDALI BITMAP Vijay_Kundali.bmp
