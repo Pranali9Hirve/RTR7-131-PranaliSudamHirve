@@ -408,15 +408,13 @@ void drawCircles(float radius, GLfloat r, GLfloat g, GLfloat b)
 
     glBegin(GL_LINE_LOOP);
 
-    glVertex3f(0.0f, 0.0f, 0.0f);
-
     for(int i = 0; i <= 360; i++)
     {
-        float angle = 2.0f * 3.14159265f * i / 360.0f;
+        float angle =  3.14159265f/ 180.0f;
 
         glVertex3f(
-            radius * cosf(angle),
-            radius * sinf(angle),
+            radius * cosf(angle * i),
+            radius * sinf(angle * i),
             0.0f
         );
     }
