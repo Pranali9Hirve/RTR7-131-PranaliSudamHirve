@@ -23,17 +23,20 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 // Global Variable declaration
 HWND psh_ghwnd = NULL;
 // openGL
-HDC ghdc = NULL;
-HGLRC ghrc = NULL; // graphics library chya render context cha handle
-BOOL bFullscreen = FALSE;
-DWORD dwStyle;
-WINDOWPLACEMENT wpPrev;
-FILE *gpFile = NULL;
+HDC psh_ghdc = NULL;
+HGLRC psh_ghrc = NULL; // graphics library chya render context cha handle
+BOOL psh_bFullscreen = FALSE;
+DWORD psh_dwStyle;
+WINDOWPLACEMENT psh_wpPrev;
+FILE *psh_gpFile = NULL;
 
-BOOL bActiveWindow = FALSE;
-BOOL bEscapeKeyIsPressed = FALSE;
+BOOL psh_bActiveWindow = FALSE;
+BOOL psh_bEscapeKeyIsPressed = FALSE;
 
+GLfloat pshAnglePyramid = 0.0f;
 GLfloat pshAngleCube = 0.0f;
+
+GLint psh_texture_kundali = 0;
 
 // Entry Point Function
 // HINSTANCE -> HANDLE
@@ -47,16 +50,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
     // Variable Declarations
     // Create logfile
-    gpFile = fopen("Log.txt", "w");
+    psh_gpFile = fopen("Log.txt", "w");
 
-    if (gpFile == NULL)
+    if (psh_gpFile == NULL)
     {
         MessageBox(NULL, TEXT("Log file creation failed"), TEXT("ERROR"), MB_OK);
         exit(0);
     }
     else
     {
-        fprintf(gpFile, "PSH: Program started successfully !!!\n");
+        fprintf(psh_gpFile, "PSH: Program started successfully !!!\n");
     }
 
     WNDCLASSEX wndclass;
@@ -66,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
     // game loop
     // Variable declaration
-    BOOL bDone = FALSE;
+    BOOL psh_bDone = FALSE;
 
     // Code
     // 1: WNDCLASSEX Structure Initialization
@@ -97,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     hwnd = CreateWindowEx(
         WS_EX_APPWINDOW,
         szAppName,
-        TEXT("PRANALI HIRVE: RTR7-131-PranaliSudamHirve/RTR-7/MyProjects/01-OpenGL/01-FFP/01-Windows/02-OpenGL/07-3DRotation//02-TwoShapes/01-BlackAndWhite/01-SingleShape/02-Cube"),
+        TEXT("PRANALI HIRVE: RTR7-131-PranaliSudamHirve/RTR-7/MyProjects/01-OpenGL/01-FFP/01-Windows/02-OpenGL/29-Texture/01-One3DShape/02-Cube"),
         WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE,
         pshScreenWidth/2 - PSH_WIN_WIDTH/2, // x-coordinate, screen 
         pshScreenHeight/2 - PSH_WIN_HEIGHT/2, // y-coordinate
@@ -116,13 +119,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     int iResult = initialize();
     if (iResult != 0)
     {
-        fprintf(gpFile, "PSH: WinMain(): initialize():  function failed\n");
+        fprintf(psh_gpFile, "PSH: WinMain(): initialize():  function failed\n");
         DestroyWindow(hwnd); // OS send me WM_DESTROY
         hwnd = NULL;
     }
     else
     {
-        fprintf(gpFile, "PSH: WinMain(): initialize():  function Succedded\n");
+        fprintf(psh_gpFile, "PSH: WinMain(): initialize():  function Succedded\n");
     }
 
     // Show Window
@@ -139,13 +142,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
 
     // Game Loop
-    while(bDone == FALSE)
+    while(psh_bDone == FALSE)
     {
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE ))
         {
             if (msg.message == WM_QUIT)
             {
-                bDone = TRUE;
+                psh_bDone = TRUE;
             }
             else
             {
@@ -155,11 +158,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
         }
         else
         {
-            if (bActiveWindow == TRUE)
+            if (psh_bActiveWindow == TRUE)
             {
-                if (bEscapeKeyIsPressed == TRUE)
+                if (psh_bEscapeKeyIsPressed == TRUE)
                 {
-                    bDone = TRUE;
+                    psh_bDone = TRUE;
                 }
 
                 // Render
@@ -191,14 +194,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(131);
             break;
         case WM_CREATE:
-            memset(&wpPrev, 0, sizeof(WINDOWPLACEMENT));
-            wpPrev.length = sizeof(WINDOWPLACEMENT);
+            memset(&psh_wpPrev, 0, sizeof(WINDOWPLACEMENT));
+            psh_wpPrev.length = sizeof(WINDOWPLACEMENT);
             break;
         case WM_SETFOCUS:
-            bActiveWindow = TRUE;
+            psh_bActiveWindow = TRUE;
             break;
         case WM_KILLFOCUS:
-            bActiveWindow = FALSE;
+            psh_bActiveWindow = FALSE;
             break;
         case WM_SIZE:
             resize(LOWORD(lParam), HIWORD(lParam));
@@ -207,7 +210,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             switch(wParam)
             {
                 case VK_ESCAPE:
-                    bEscapeKeyIsPressed = TRUE;
+                    psh_bEscapeKeyIsPressed = TRUE;
                     break;
                 default:
                     break;
@@ -218,19 +221,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             {
                 case 'F':
                 case 'f':
-                    if (bFullscreen == FALSE)
+                    if (psh_bFullscreen == FALSE)
                     {
                         ToggleFullscreen();
-                        bFullscreen = TRUE;
+                        psh_bFullscreen = TRUE;
                     }
                     else
                     {
                         ToggleFullscreen();
-                        bFullscreen = FALSE;
+                        psh_bFullscreen = FALSE;
                     }
 
                     // ToggleFullscreen(); <- short code of above
-                    // bFullscreen = !bFullscreen;
+                    // psh_bFullscreen = !psh_bFullscreen;
 
                     break;
                 
@@ -239,7 +242,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
             }
             break;
         // case WM_RBUTTONDOWN:
-        //     bEscapeKeyIsPressed = TRUE;
+        //     psh_bEscapeKeyIsPressed = TRUE;
         // break;
         case WM_CLOSE:
             unInitialize();
@@ -256,17 +259,17 @@ void ToggleFullscreen(void)
     MONITORINFO mi;
     // Code
     //second setp
-    if (bFullscreen == FALSE)
+    if (psh_bFullscreen == FALSE)
     {
         // Get current window style
-        dwStyle = GetWindowLong(psh_ghwnd, GWL_STYLE);
-        if (dwStyle & WS_OVERLAPPEDWINDOW )
+        psh_dwStyle = GetWindowLong(psh_ghwnd, GWL_STYLE);
+        if (psh_dwStyle & WS_OVERLAPPEDWINDOW )
         {
             memset(&mi, 0, sizeof(MONITORINFO));
             mi.cbSize = sizeof(MONITORINFO);
-            if (GetWindowPlacement(psh_ghwnd, &wpPrev) && GetMonitorInfo(MonitorFromWindow(psh_ghwnd, MONITORINFOF_PRIMARY), &mi))
+            if (GetWindowPlacement(psh_ghwnd, &psh_wpPrev) && GetMonitorInfo(MonitorFromWindow(psh_ghwnd, MONITORINFOF_PRIMARY), &mi))
             {
-                SetWindowLong(psh_ghwnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW);
+                SetWindowLong(psh_ghwnd, GWL_STYLE, psh_dwStyle & ~WS_OVERLAPPEDWINDOW);
                 SetWindowPos(psh_ghwnd, HWND_TOP, mi.rcMonitor.left, mi.rcMonitor.top, (mi.rcMonitor.right - mi.rcMonitor.left), (mi.rcMonitor.bottom - mi.rcMonitor.top), SWP_NOZORDER |
                 SWP_NOZORDER | SWP_FRAMECHANGED);
                 
@@ -277,8 +280,8 @@ void ToggleFullscreen(void)
     }
     else
     {
-        SetWindowLong(psh_ghwnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW);
-        SetWindowPlacement(psh_ghwnd, &wpPrev);
+        SetWindowLong(psh_ghwnd, GWL_STYLE, psh_dwStyle | WS_OVERLAPPEDWINDOW);
+        SetWindowPlacement(psh_ghwnd, &psh_wpPrev);
         SetWindowPos(psh_ghwnd, HWND_TOP, 0 ,0 ,0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_FRAMECHANGED );
         ShowCursor(TRUE);
     }
@@ -289,6 +292,8 @@ int initialize(void)
     // Function declarations
     void resize(int, int);
     void printGLInfo(void);
+    BOOL loadGLTexture(GLuint* , TCHAR[]);
+    
 
     // Variable declarations
     PIXELFORMATDESCRIPTOR pfd;
@@ -305,31 +310,31 @@ int initialize(void)
     pfd.cAlphaBits = 8;
     pfd.cDepthBits = 32; // 2^32 => enable the depth
 
-    ghdc = GetDC(psh_ghwnd);
+    psh_ghdc = GetDC(psh_ghwnd);
 
-    if (ghdc == NULL)
+    if (psh_ghdc == NULL)
     {
         return(-1);
     }
 
-    iPixelFormatIndex = ChoosePixelFormat(ghdc, &pfd);
+    iPixelFormatIndex = ChoosePixelFormat(psh_ghdc, &pfd);
     if (iPixelFormatIndex == 0)
     {
         return(-2);
     }
 
-    if (SetPixelFormat(ghdc, iPixelFormatIndex, &pfd) == FALSE)
+    if (SetPixelFormat(psh_ghdc, iPixelFormatIndex, &pfd) == FALSE)
     {
         return(-3);
     }
 
-    ghrc = wglCreateContext(ghdc);
-    if (ghrc == NULL)
+    psh_ghrc = wglCreateContext(psh_ghdc);
+    if (psh_ghrc == NULL)
     {
         return(-4);
     }
 
-    if (wglMakeCurrent(ghdc, ghrc) == FALSE)
+    if (wglMakeCurrent(psh_ghdc, psh_ghrc) == FALSE)
     {
         return(-5);
     }
@@ -346,6 +351,20 @@ int initialize(void)
 
     // Choose screen clearing color as blue
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // blue
+
+    // Load textures
+    BOOL bResult = FALSE;
+    bResult = loadGLTexture(&psh_texture_kundali, MAKEINTRESOURCE(IDBITMAP_KUNDALI));
+    if (bResult == FALSE)
+    {
+        fprintf(psh_gpFile, "failed to load psh_texture_kundali !!!\n");
+        return -6;
+
+    }
+
+    // Enable texturing
+    glEnable(GL_TEXTURE_2D);
+
     resize(PSH_WIN_WIDTH, PSH_WIN_HEIGHT);
 
     return(0);
@@ -354,9 +373,45 @@ int initialize(void)
 void printGLInfo(void)
 {
     // Code
-    fprintf(gpFile, "OpenGL Vendor: %s\n", glGetString(GL_VENDOR));
-    fprintf(gpFile, "OpenGL Renderer: %s\n", glGetString(GL_RENDERER)); // Driver chi identity
-    fprintf(gpFile, "OpenGL Version: %s\n", glGetString(GL_VERSION));
+    fprintf(psh_gpFile, "OpenGL Vendor: %s\n", glGetString(GL_VENDOR));
+    fprintf(psh_gpFile, "OpenGL Renderer: %s\n", glGetString(GL_RENDERER)); // Driver chi identity
+    fprintf(psh_gpFile, "OpenGL Version: %s\n", glGetString(GL_VERSION));
+}
+
+BOOL loadGLTexture(GLuint* tx, TCHAR imageResourceId[])
+{
+    //Variable declarations
+    HBITMAP hBitMap = NULL;
+    BITMAP bmp;
+
+    // code
+    hBitMap = (HBITMAP)LoadImage(GetModuleHandle(NULL), imageResourceId, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+    if (hBitMap == NULL)
+    {
+        fprintf(psh_gpFile, "failed to load psh_texture_kundali !!!\n");
+    }
+
+    GetObject(hBitMap, sizeof(BITMAP), &bmp);
+
+    // 
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+    // 
+    glGenTextures(1, tx);
+
+    glBindTexture(GL_TEXTURE_2D, *tx);
+
+    // give parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmp.bmWidth, bmp.bmHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, bmp.bmBits);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    DeleteObject(hBitMap);
+
+    return TRUE;
 }
 
 void resize(int width, int height)
@@ -384,14 +439,7 @@ void render() // disply
 {
     // Code
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT); //bepth buffer clear kr with 1.0f
-    // Pyramid
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glTranslatef(-1.5f, 0.0f, -6.0f); // Matrix madhe value aaly ani triangle disla
-    glRotatef(pshAngleCube, 1.0f, 0.0f, 0.0f);
-    glRotatef(pshAngleCube, 0.0f, 1.0f, 0.0f);
-    glRotatef(pshAngleCube, 0.0f, 0.0f, 1.0f);
-
+    
     // Cube:  front red, right green, back blue, left cyan, top magenta , bottom yellow
     glMatrixMode(GL_MODELVIEW); // Optional
     glLoadIdentity(); // Compulsory
@@ -401,52 +449,84 @@ void render() // disply
     glRotatef(pshAngleCube, 0.0f, 1.0f, 0.0f);
     glRotatef(pshAngleCube, 0.0f, 0.0f, 1.0f);
 
+    glBindTexture(GL_TEXTURE_2D, psh_texture_kundali);
+
     glBegin(GL_QUADS);
-        glColor3f(1.0f, 1.0f, 1.0f);
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(1.0f, 1.0f, 1.0f);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(-1.0f, 1.0f, 1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, 1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(1.0f, -1.0f, 1.0f);
 
         // Right
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(1.0f,  1.0f,  1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(1.0f, -1.0f,  1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(1.0f, -1.0f, -1.0f);
 
-        // B
+        // BACK
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(-1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(1.0f, -1.0f, -1.0f);
 
         // Left
+        glTexCoord2f(1.0f, 1.0f);
         glVertex3f(-1.0f,  1.0f,  1.0f);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(-1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, 1.0f);
 
-        // top				 
-        glVertex3f(1.0f,  1.0f, -1.0f);	
-        glVertex3f(-1.0f,  1.0f, -1.0f);	
+        // top	
+        glTexCoord2f(1.0f, 1.0f);			 
+        glVertex3f(1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 1.0f);	
+        glVertex3f(-1.0f,  1.0f, -1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(-1.0f,  1.0f,  1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(1.0f,  1.0f,  1.0f);
 						 
-	    // bottom	        
+	    // bottom
+        glTexCoord2f(1.0f, 1.0f);	        
         glVertex3f(1.0f, -1.0f,  1.0f);
+        glTexCoord2f(0.0f, 1.0f);
         glVertex3f(-1.0f, -1.0f,  1.0f);
+        glTexCoord2f(0.0f, 0.0f);
         glVertex3f(-1.0f, -1.0f, -1.0f);
+        glTexCoord2f(1.0f, 0.0f);
         glVertex3f(1.0f, -1.0f, -1.0f);
 
     glEnd();
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     // Do double buffering
-    SwapBuffers(ghdc);
+    SwapBuffers(psh_ghdc);
 }
 
 void update()
 {
     // Code
+    pshAnglePyramid = pshAnglePyramid + 0.1f;
+    if (pshAnglePyramid >= 360.0f)
+    {
+        pshAnglePyramid = 0.0f;
+    }
+
     pshAngleCube = pshAngleCube + 0.1f;
     if (pshAngleCube >= 360.0f)
     {
@@ -456,34 +536,43 @@ void update()
 
 void unInitialize()
 {
+
+
     // Code
     // if exiting in fullcreen first restore then proceed
-    if (bFullscreen == TRUE)
+    if (psh_bFullscreen == TRUE)
     {
         ToggleFullscreen();
-        bFullscreen = FALSE;
+        psh_bFullscreen = FALSE;
+    }
+
+    if (psh_texture_kundali)
+    {
+        glDeleteTextures(1, &psh_texture_kundali);
+            psh_texture_kundali = 0;
+
     }
 
     // Destroy window
     // First check the current context and if it is then un make it
 
-    if (wglGetCurrentContext() == ghrc)
+    if (wglGetCurrentContext() == psh_ghrc)
     {
         wglMakeCurrent(NULL, NULL);
     }
 
     // Now destroy the rendering context
-    if (ghrc)
+    if (psh_ghrc)
     {
-        wglDeleteContext(ghrc);
-        ghrc = NULL;
+        wglDeleteContext(psh_ghrc);
+        psh_ghrc = NULL;
     }
 
     // release the device context
-    if (ghdc)
+    if (psh_ghdc)
     {
-        ReleaseDC(psh_ghwnd, ghdc);
-        ghdc = NULL;
+        ReleaseDC(psh_ghwnd, psh_ghdc);
+        psh_ghdc = NULL;
     }
 
     if (psh_ghwnd)
@@ -493,10 +582,10 @@ void unInitialize()
     }
 
     // close of file
-    if (gpFile)
+    if (psh_gpFile)
     {
-        fprintf(gpFile, "PSH: Program terminated successfully!!!\n");
-        fclose(gpFile);
-        gpFile = NULL;
+        fprintf(psh_gpFile, "PSH: Program terminated successfully!!!\n");
+        fclose(psh_gpFile);
+        psh_gpFile = NULL;
     }
 }

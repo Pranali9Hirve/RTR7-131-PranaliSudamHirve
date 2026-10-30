@@ -2,3 +2,5 @@
 #include "OGL.h"
 
 MYICON ICON PshIcon.ico
+
+IDBITMAP_STONE BITMAP Stone.bmp
