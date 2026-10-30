@@ -37,6 +37,8 @@ CHAR pshKeyPressed;
 BOOL psh_cPressed = FALSE;
 BOOL psh_tPressed = FALSE;
 BOOL psh_sPressed = FALSE;
+BOOL psh_gPressed = FALSE;
+
 
 
 // Entry Point Function
@@ -274,10 +276,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
                 case 'g':
                     pshKeyPressed = 'g';
+                    if (psh_gPressed == FALSE)
+                    {
+                        psh_gPressed = TRUE;
+                    }
+                    else
+                    {
+                        psh_gPressed = FALSE;
+                    }
                     break;
                 
                 case '0':
                     pshKeyPressed = '0';
+                    psh_gPressed = FALSE;
                     break;
                 
                 default:
@@ -426,14 +437,14 @@ void render() // disply
     glLoadIdentity();
     glTranslatef(0.0f, 0.0f, -1.5f);
 
-    if (pshKeyPressed == 'g')
+    if (psh_gPressed == TRUE)
     {
         glLoadIdentity();
         glTranslatef(0.0f, 0.0f, -1.5f);
         drawGraph();
     } 
 
-    if (psh_tPressed)
+    if (psh_tPressed  == TRUE)
     {
         // drawGraph();
         glLoadIdentity();
@@ -446,7 +457,7 @@ void render() // disply
         glEnd();
     }
 
-    if (psh_sPressed)
+    if (psh_sPressed  == TRUE)
     {
         //drawGraph();
         glLoadIdentity();
@@ -460,7 +471,7 @@ void render() // disply
         glEnd();
     }
 
-    if (psh_cPressed)
+    if (psh_cPressed  == TRUE)
     {
         glLoadIdentity();
         glTranslatef(0.0f, 0.0f, -3.0f);
