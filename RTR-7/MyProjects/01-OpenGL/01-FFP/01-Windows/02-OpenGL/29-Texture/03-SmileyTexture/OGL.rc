@@ -1,0 +1,6 @@
+// locally created and used hence in double quotes
+#include "OGL.h"
+
+MYICON ICON PshIcon.ico
+
+IDBITMAP_SMILEY BITMAP Smiley.bmp
